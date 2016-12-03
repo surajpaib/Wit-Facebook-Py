@@ -1,15 +1,15 @@
 from wit import Wit
-import pywapi
 from flask import Flask, request
 from pymessenger.bot import Bot
 import requests
 import os
+from tvshowlisting import tvlisting
 
 # Insert Wit access token here. Don't forget to train the Wit bot.
-access_token = os.environ.get('WIT_TOKEN')
+access_token = os.environ.get('F6V6GKFJVYVXMLPC36HP7L222HGZM2TF')
 
 # Facebook App access token. Don't forge to connect app to page.
-TOKEN = os.environ.get('FB_PAGE_TOKEN')
+TOKEN = os.environ.get('EAATQSAo4L7sBAGON9jVp19ZCBsURJ9ErTBRjfN385UgtOCEwFGHgkR8wIVAXDTUGWvexZBn6fvzFyvr2AS1gkFNOZC4afnw2gonhfnZAAr4PnbhaLagBCVbx9C2N1spiMotQ3d4665eog6ZAFuMtVc7Uzd23yiZBE1goCujZAjl0wZDZD')
 
 # Set up bot and flask app
 bot = Bot(TOKEN)
@@ -37,9 +37,9 @@ def say(session_id, context, msg):
 
 
 def merge(session_id, context, entities, msg):
-    loc = first_entity_value(entities, 'location')
+    loc = first_entity_value(entities, 'channel')
     if loc:
-        context['loc'] = loc
+        context['channel'] = loc
     return context
 
 
@@ -48,18 +48,28 @@ def error(session_id, context, e):
 
 
 # Calls pywapi to fetch weather info in realtime
-def fetch_weather(session_id, context):
-    location = context['loc']
-    location_id = pywapi.get_loc_id_from_weather_com(location)[0][0]
-    weather_com_result = pywapi.get_weather_from_weather_com(location_id)
-    context['forecast'] = weather_com_result["current_conditions"]["text"]
+def gettvlisting(session_id, context):
+    channel = context['channel']
+    if channel:
+        # This is where we could use a weather service api to get the weather.
+
+
+
+
+        context['tvshow'] = tvlisting(channel)
+        if context.get('missingChannel') is not None:
+            del context['missingChannel']
+    else:
+        context['missingChannel'] = True
+        if context.get('tvshow') is not None:
+            del context['tvshow']
     return context
 
 actions = {
     'say': say,
     'merge': merge,
     'error': error,
-    'fetch-weather': fetch_weather,
+    'gettvlisting': gettvlisting,
 }
 
 client = Wit(access_token, actions)
@@ -71,7 +81,7 @@ client = Wit(access_token, actions)
 def hello():
     # Get request according to Facebook Requirements
     if request.method == 'GET':
-        if (request.args.get("hub.verify_token") == os.environ.get('FB_VERIFY_TOKEN')):
+        if (request.args.get("hub.verify_token") == os.environ.get('goklunkers')):
             return request.args.get("hub.challenge")
     # Post Method for replying to messages
     if request.method == 'POST':
