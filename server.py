@@ -9,7 +9,7 @@ from tvshowlisting import tvlisting
 access_token = os.environ.get('F6V6GKFJVYVXMLPC36HP7L222HGZM2TF')
 
 # Facebook App access token. Don't forge to connect app to page.
-TOKEN = os.environ.get('EAATQSAo4L7sBAGON9jVp19ZCBsURJ9ErTBRjfN385UgtOCEwFGHgkR8wIVAXDTUGWvexZBn6fvzFyvr2AS1gkFNOZC4afnw2gonhfnZAAr4PnbhaLagBCVbx9C2N1spiMotQ3d4665eog6ZAFuMtVc7Uzd23yiZBE1goCujZAjl0wZDZD')
+TOKEN = os.environ.get('EAATQSAo4L7sBAEZBu8KjwmTlQ6Q0kXpbEJTZCX90UPwdCw3EZCsKZCrxvk0SeQ7hZCVJKza2G6ip3y4DxdgW0kGO4Ori4LsyzFrUnw92YJyIlYC1omnWeGDf3pZAu79yPU43LO4zOSLpUQgZCtidQHWgA095GRYIZBEtWpI435FVcAZDZD')
 
 # Set up bot and flask app
 bot = Bot(TOKEN)
