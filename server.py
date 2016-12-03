@@ -47,7 +47,7 @@ def error(session_id, context, e):
     print(str(e))
 
 
-# Calls pywapi to fetch weather info in realtime
+# Calls tvlisting to fetch TV channel info in realtime
 def gettvlisting(session_id, context):
     channel = context['channel']
     context['tvshow'] = tvlisting(channel)

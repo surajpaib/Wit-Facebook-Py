@@ -17,11 +17,9 @@ def tvlisting(channel):
         month="0"+str(month)
 
     date=str(day)+str(month)+year
-    print date
     tv=requests.get("http://indian-television-guide.appspot.com/indian_television_guide?channel="+channel+"&date="+date)
     content=json.loads(tv.content)
     time=roundofftime(t)
-    print time
     shows=content["listOfShows"]
 
     for show in shows:
