@@ -29,31 +29,34 @@ def first_entity_value(entities, entity):
     return val['value'] if isinstance(val, dict) else val
 
 
-def merge(context, entities):
+def say(session_id, context, msg):
+    global messageToSend
+    messageToSend = str(msg)
+    global done
+    done = True
+
+
+def merge(session_id, context, entities, msg):
     loc = first_entity_value(entities, 'channel')
     if loc:
         context['channel'] = loc
     return context
 
+
+def error(session_id, context, e):
+    print(str(e))
+
+
 # Calls pywapi to fetch weather info in realtime
-def gettvlisting(session_id,context,entities):
-    channel = entities['channel']
-    if channel:
-        # This is where we could use a weather service api to get the weather.
-
-
-
-
-        context['tvshow'] = tvlisting(channel)
-        if context.get('missingChannel') is not None:
-            del context['missingChannel']
-    else:
-        context['missingChannel'] = True
-        if context.get('tvshow') is not None:
-            del context['tvshow']
+def gettvlisting(session_id, context):
+    channel = context['channel']
+    context['tvshow'] = tvlisting(channel)
     return context
 
 actions = {
+    'say': say,
+    'merge': merge,
+    'error': error,
     'gettvlisting': gettvlisting,
 }
 
@@ -66,7 +69,7 @@ client = Wit(access_token, actions)
 def hello():
     # Get request according to Facebook Requirements
     if request.method == 'GET':
-        if (request.args.get("hub.verify_token") == "goklunkers"):
+        if (request.args.get("hub.verify_token") == "goklunkers":
             return request.args.get("hub.challenge")
     # Post Method for replying to messages
     if request.method == 'POST':
@@ -83,7 +86,6 @@ def hello():
             else:
                 pass
         return "success"
-
 
 # Default test route for server
 @app.route("/")
