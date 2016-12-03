@@ -6,10 +6,10 @@ import os
 from tvshowlisting import tvlisting
 
 # Insert Wit access token here. Don't forget to train the Wit bot.
-access_token = os.environ.get('F6V6GKFJVYVXMLPC36HP7L222HGZM2TF')
+access_token ='F6V6GKFJVYVXMLPC36HP7L222HGZM2TF'
 
 # Facebook App access token. Don't forge to connect app to page.
-TOKEN = os.environ.get('EAATQSAo4L7sBAEZBu8KjwmTlQ6Q0kXpbEJTZCX90UPwdCw3EZCsKZCrxvk0SeQ7hZCVJKza2G6ip3y4DxdgW0kGO4Ori4LsyzFrUnw92YJyIlYC1omnWeGDf3pZAu79yPU43LO4zOSLpUQgZCtidQHWgA095GRYIZBEtWpI435FVcAZDZD')
+TOKEN ='EAATQSAo4L7sBAEZBu8KjwmTlQ6Q0kXpbEJTZCX90UPwdCw3EZCsKZCrxvk0SeQ7hZCVJKza2G6ip3y4DxdgW0kGO4Ori4LsyzFrUnw92YJyIlYC1omnWeGDf3pZAu79yPU43LO4zOSLpUQgZCtidQHWgA095GRYIZBEtWpI435FVcAZDZD'
 
 # Set up bot and flask app
 bot = Bot(TOKEN)
@@ -29,27 +29,15 @@ def first_entity_value(entities, entity):
     return val['value'] if isinstance(val, dict) else val
 
 
-def say(session_id, context, msg):
-    global messageToSend
-    messageToSend = str(msg)
-    global done
-    done = True
-
-
-def merge(session_id, context, entities, msg):
+def merge(context, entities):
     loc = first_entity_value(entities, 'channel')
     if loc:
         context['channel'] = loc
     return context
 
-
-def error(session_id, context, e):
-    print(str(e))
-
-
 # Calls pywapi to fetch weather info in realtime
-def gettvlisting(session_id, context):
-    channel = context['channel']
+def gettvlisting(session_id,context,entities):
+    channel = entities['channel']
     if channel:
         # This is where we could use a weather service api to get the weather.
 
@@ -66,9 +54,6 @@ def gettvlisting(session_id, context):
     return context
 
 actions = {
-    'say': say,
-    'merge': merge,
-    'error': error,
     'gettvlisting': gettvlisting,
 }
 
@@ -81,7 +66,7 @@ client = Wit(access_token, actions)
 def hello():
     # Get request according to Facebook Requirements
     if request.method == 'GET':
-        if (request.args.get("hub.verify_token") == os.environ.get('goklunkers')):
+        if (request.args.get("hub.verify_token") == "goklunkers"):
             return request.args.get("hub.challenge")
     # Post Method for replying to messages
     if request.method == 'POST':
