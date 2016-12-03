@@ -69,7 +69,7 @@ client = Wit(access_token, actions)
 def hello():
     # Get request according to Facebook Requirements
     if request.method == 'GET':
-        if (request.args.get("hub.verify_token") == "goklunkers":
+        if (request.args.get("hub.verify_token") == "goklunkers"):
             return request.args.get("hub.challenge")
     # Post Method for replying to messages
     if request.method == 'POST':
